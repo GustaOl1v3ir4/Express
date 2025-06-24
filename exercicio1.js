@@ -5,7 +5,7 @@ const porta = 9000
 
 app.get('/somar', (req, res) => {
     const {num1, num2 } = req.query
-    res.send('A soma é: ' + (Number(num1) + Number(num2)))
+    res.send('A soma é essa aqui: ' + (Number(num1) + Number(num2)))
 })
 
 app.listen(porta, () => {
