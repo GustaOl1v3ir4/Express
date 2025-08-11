@@ -1,10 +1,10 @@
-const ServiceUser = require("../services/user")
+const ServicePerson = require("../services/person")
 
-class ApiUser {
+class ApiPerson {
 
     async FindAll(_,res) {
         try {
-            const result = await ServiceUser.FindAll()
+            const result = await ServicePerson.FindAll()
 
             res.status(200).send({ result })
         } catch (e) {
@@ -15,7 +15,7 @@ class ApiUser {
      async FindById(req,res) {
         try{
             const { id } = req.params
-            const result = await ServiceUser.FindById(id)
+            const result = await ServicePerson.FindById(id)
         
             res.status(200).send({ result })
         } catch (e) {
@@ -25,8 +25,8 @@ class ApiUser {
 
      async Create(req,res) {
         try{
-            const {email, password  } = req.body
-            await ServiceUser.Create(email, password)
+            const { name, address, userId  } = req.body
+            await ServicePerson.Create(name, address, userId)
         
             res.status(201).send()
         } catch (e) {
@@ -37,8 +37,8 @@ class ApiUser {
      async Update(req,res) {
         try{
             const { id } = req.params
-            const { email, password } = req.body
-            const result = await ServiceUser.Update(id, email, password)
+            const { name, address } = req.body
+            const result = await ServicePerson.Update(id, name, address)
 
            
 
@@ -50,7 +50,7 @@ class ApiUser {
     async Delete(req,res) {
        try{
             const { id } = req.params
-            await ServiceUser.Update(id)
+            await ServicePerson.Update(id)
 
             res.status(204).send()
         } catch (e) {
@@ -59,7 +59,7 @@ class ApiUser {
     }
 }
 
-module.exports = new ApiUser();
+module.exports = new ApiPerson();
 
 
 

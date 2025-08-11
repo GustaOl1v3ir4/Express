@@ -1,25 +1,42 @@
 const user = require("../model/users")
 
 class ServiceUser {
-    FindAll() {
-        return user.FindAll() 
+    async FindAll() {
+        return user.findAll(); 
     }
 
-    FindByIndex(index) {
-        return user.FindByIndex(index)
+    async FindById(id) {
+        return user.findByPk(id);
     }
 
-    Create(nome) {
-        user.Create(nome)
+    async Create(email, password) {
+        if (!email) {
+            throw new Error("Favor informar email")
+        } else if (!password) {
+            throw new Error("Favor informar senha")
+        }
+
+
+        return user.create({
+            email, password
+        })
     }
 
-    Update(index, nome) {
-        user.Update(index, nome)
+    async Update(id, email, password) {
+        const oldUser = await this.FindById(id)
+
+        oldUser.email = email || oldUser.email
+        oldUser.password = password || oldUser.password
+
+        oldUser.save()
+
+        return oldUser
     }
 
-    Delete(index) {
-        user.Delete(index)
+    async Delete(id) {
+        const user = await this.FindById(id)
+        user.destroy()
     }
 }
 
-module.exports = new ServiceUser;
+module.exports = new ServiceUser();
