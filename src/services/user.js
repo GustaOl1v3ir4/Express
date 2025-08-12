@@ -1,15 +1,16 @@
+const { transaction } = require("../../test/integration/user.test");
 const user = require("../model/users")
 
 class ServiceUser {
-    async FindAll() {
-        return user.findAll(); 
+    async FindAll(transaction) {
+        return user.findAll({ transaction }); 
     }
 
-    async FindById(id) {
-        return user.findByPk(id);
+    async FindById(id, transaction ) {
+        return user.findByPk(id, { transaction });
     }
 
-    async Create(email, password) {
+    async Create(email, password, transaction) {
         if (!email) {
             throw new Error("Favor informar email")
         } else if (!password) {
@@ -19,23 +20,25 @@ class ServiceUser {
 
         return user.create({
             email, password
-        })
+        }, { transaction })
     }
 
-    async Update(id, email, password) {
-        const oldUser = await this.FindById(id)
+    async Update(id, email, password, transaction) {
+        const oldUser = await this.FindById(id, transaction)
 
         oldUser.email = email || oldUser.email
         oldUser.password = password || oldUser.password
 
-        oldUser.save()
+        oldUser.save({ transaction })
 
         return oldUser
     }
 
-    async Delete(id) {
-        const user = await this.FindById(id)
-        user.destroy()
+    async Delete(id, transaction) {
+        const user = await this.FindById(id, transaction)
+        user.destroy({ transaction })
+
+        return true
     }
 }
 
