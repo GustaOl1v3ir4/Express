@@ -48,7 +48,7 @@ describe("Teste de usuário", () => {
             id: this.id
         }
 
-        const response = await serviceUser.Update(user.id, this.transaction)
+        const response = await serviceUser.Delete(user.id, this.transaction)
         
 
         expect(response).toBe(true)
