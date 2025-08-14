@@ -1,5 +1,9 @@
-const { transaction } = require("../../test/integration/user.test");
 const user = require("../model/users")
+const jwt = require("jsonwebtoken")
+const bcrypy = require('bcrypt')
+
+const secretKey = "M!nh4S3nh4Secreta"
+const salt = 10
 
 class ServiceUser {
     async FindAll(transaction) {
@@ -17,9 +21,10 @@ class ServiceUser {
             throw new Error("Favor informar senha")
         }
 
+        const hasPass = await bcrypy.hash(password, salt)
 
         return user.create({
-            email, password
+            email, password: hasPass
         }, { transaction })
     }
 
@@ -27,7 +32,7 @@ class ServiceUser {
         const oldUser = await this.FindById(id, transaction)
 
         oldUser.email = email || oldUser.email
-        oldUser.password = password || oldUser.password
+        oldUser.password = password ? await bcrypy.hash(password, salt) : oldUser.password
 
         oldUser.save({ transaction })
 
@@ -39,6 +44,29 @@ class ServiceUser {
         user.destroy({ transaction })
 
         return true
+    }
+
+    async Login(email, password) {
+        if (!email) {
+            throw new Error("Favor informar email")
+        } else if (!password) {
+            throw new Error("Favor informar senha")
+        }
+
+        const currentUser = await user.findOne({where: {email} })
+
+        if (!currentUser) {
+            throw new Error ("Email ou senha inválidos")
+        }
+        
+        const verify = await bcrypy.compare(password, currentUser.password)
+
+
+        if (verify){
+            return jwt.sign({id: currentUser.id }, secretKey, {expiresIn: 60 * 60 })
+        }
+
+        throw new Error("Email ou senha inválidos")
     }
 }
 

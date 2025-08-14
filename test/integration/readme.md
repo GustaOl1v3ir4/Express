@@ -9,3 +9,16 @@ Quando executamos um INSERT em uma tabela, a inserção só é realmente salva n
 
 Explíctias: Ocorre quando nós indicamos a partir de onde começa esse conjunto de comandos que estarão nessa transação.
 ou tudo é salvo no banco de dados ou nada.
+
+
+JWT -> É um padrão aberto para representar informações com segurança entre duas partes como um objeto JSON. Ele é comumente usado para autenticação e compartilhamento de informaçõs seguras entre sistemas. 
+O JWT é especialmente útil em ambientes distribuidos e em aplicações da web, onde tokens são frequentemente usados para autenticação e autorização
+
+Estrutura JWC: 
+ -> header: tipo de token e o algoritmo de hash usado para assinar o token. 
+ -> payload: contém as informações ou "reinvidicações" que o token carrega.
+ -> assinatura: usada para verificar a integridade dos dados no token.
+
+Bcrypt -> biblioteca de criptografia de senhas usada para proteger senhas armazenadas em banco de dados e, assim aumentar a segurança das credenciais
+
+A principal caracteristica do Bcrypt é sua função de hash de senha segura, que é um algoritmo de hash adaptativo.
